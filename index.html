@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Feliz Cumpleaños Mamá!</title>
+    <!-- Google Fonts para estilo de ticket aéreo -->
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1587313089743-2192e21517ef?auto=format&fit=crop&w=1200&q=80'); /* Foto de Parque Güell */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #333;
+        }
+
+        /* Contenedor de la Tarjeta */
+        .card-container {
+            width: 100%;
+            max-width: 450px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            padding: 30px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            color: #d32f2f;
+            font-weight: 900;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 25px;
+        }
+
+        /* Botón de Avión Interactivo */
+        .airplane-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            outline: none;
+            position: relative;
+            transition: transform 0.3s ease;
+            margin-bottom: 20px;
+        }
+        .airplane-btn:hover {
+            transform: scale(1.1);
+        }
+        .airplane-icon {
+            font-size: 70px;
+            display: inline-block;
+            transform: rotate(45deg);
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.3));
+        }
+        .btn-text {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: #d32f2f;
+            margin-top: 5px;
+            animation: pulse 1.5s infinite;
+        }
+
+        /* Cuenta Regresiva */
+        .countdown-box {
+            background: #222;
+            color: #fff;
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 10px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+        }
+        .countdown-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: #ffb300;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .timer {
+            display: flex;
+            justify-content: space-around;
+        }
+        .time-segment {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .time-number {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #fff;
+        }
+        .time-label {
+            font-size: 0.65rem;
+            color: #aaa;
+            text-transform: uppercase;
+        }
+
+        /* Sección Oculta del Ticket de Avión */
+        .ticket {
+            display: none;
+            margin-top: 25px;
+            border-top: 3px dashed #ccc;
+            padding-top: 25px;
+            animation: slideDown 0.8s ease forwards;
+        }
+
+        /* Estilo Pase de Abordar */
+        .boarding-pass {
+            font-family: 'Courier Prime', monospace;
+            background: #fff6e5;
+            border: 2px solid #e0d5be;
+            border-radius: 12px;
+            text-align: left;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .ticket-header {
+            background: #d32f2f;
+            color: white;
+            padding: 10px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: bold;
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: space-between;
+        }
+        .ticket-body {
+            padding: 15px;
+        }
+        .route-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .city-code {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #111;
+        }
+        .city-name {
+            font-size: 0.75rem;
+            color: #666;
+            display: block;
+        }
+        .route-arrow {
+            font-size: 1.5rem;
+            color: #d32f2f;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            font-size: 0.85rem;
+            border-bottom: 1px dashed #ccc;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+        .info-label {
+            font-size: 0.7rem;
+            color: #777;
+            text-transform: uppercase;
+            display: block;
+        }
+        .info-value {
+            font-weight: bold;
+            color: #222;
+        }
+        .return-section {
+            background: #ebe3d0;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+        }
+
+        /* Animaciones */
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card-container">
+        <h1>¡Feliz Cumpleaños Madre!</h1>
+        <p class="subtitle">Tu regalo te espera cruzando el océano ✈️</p>
+
+        <!-- Botón del Avión -->
+        <button class="airplane-btn" id="btn-airplane" onclick="revelarTarjeta()">
+            <span class="airplane-icon">✈️</span>
+            <span class="btn-text">👇 ¡PRESIONA EL AVIÓN AQUÍ! 👇</span>
+        </button>
+
+        <!-- Cuenta Regresiva -->
+        <div class="countdown-box">
+            <div class="countdown-title">Tu próximo viaje a Barcelona será en:</div>
+            <div class="timer">
+                <div class="time-segment">
+                    <span class="time-number" id="days">00</span>
+                    <span class="time-label">Días</span>
+                </div>
+                <div class="time-segment">
+                    <span class="time-number" id="hours">00</span>
+                    <span class="time-label">Horas</span>
+                </div>
+                <div class="time-segment">
+                    <span class="time-number" id="minutes">00</span>
+                    <span class="time-label">Min</span>
+                </div>
+                <div class="time-segment">
+                    <span class="time-number" id="seconds">00</span>
+                    <span class="time-label">Seg</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ticket Oculto -->
+        <div class="ticket" id="ticket-sorpresa">
+            <div class="boarding-pass">
+                <div class="ticket-header">
+                    <span>TARJETA DE EMBARQUE / BOARDING PASS</span>
+                    <span>VUELO: IB2606</span>
+                </div>
+                <div class="ticket-body">
+                    <div style="margin-bottom: 10px;"><span class="info-label">PASAJERO / PASSENGER</span><span class="info-value" style="font-size: 1.1rem;">MADRE ❤️</span></div>
+                    
+                    <!-- IDA -->
+                    <div class="route-row">
+                        <div>
+                            <span class="city-code">SCL</span>
+                            <span class="city-name">Santiago de Chile</span>
+                        </div>
+                        <div class="route-arrow">✈️</div>
+                        <div style="text-align: right;">
+                            <span class="city-code">BCN</span>
+                            <span class="city-name">Barcelona</span>
+                        </div>
+                    </div>
+
+                    <div class="info-grid">
+                        <div>
+                            <span class="info-label">SALIDA / DEPARTURE</span>
+                            <span class="info-value">23 JUL - 10:20</span>
+                            <span class="info-label">Terminal 2</span>
+                        </div>
+                        <div style="text-align: right;">
+                            <span class="info-label">LLEGADA / ARRIVAL</span>
+                            <span class="info-value">24 JUL - 05:55</span>
+                            <span class="info-label">Terminal 1</span>
+                        </div>
+                    </div>
+
+                    <!-- RETORNO -->
+                    <div class="return-section">
+                        <span class="info-label" style="color: #555; font-weight: bold;">RETORNO / RETURN VUELO: IB2605</span>
+                        <div class="route-row" style="margin-bottom: 5px; margin-top: 5px;">
+                            <span class="info-value">BCN (T1) ➔ SCL (T2)</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.75rem;">
+                            <span><strong>SALIDA:</strong> 13 OCT - 00:05</span>
+                            <span><strong>LLEGADA:</strong> 13 OCT - 09:25</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Efecto de Sonido Opcional Sintetizado -->
+    <script>
+        function revelarTarjeta() {
+            // Mostrar ticket
+            const ticket = document.getElementById('ticket-sorpresa');
+            ticket.style.display = 'block';
+            
+            // Hacer que el avión "despegue" visualmente al presionarlo
+            const avion = document.querySelector('.airplane-icon');
+            avion.style.transform = 'translateY(-100px) rotate(45deg) scale(2)';
+            avion.style.transition = 'all 1s ease-in-out';
+            avion.style.opacity = '0';
+            
+            document.querySelector('.btn-text').style.display = 'none';
+
+            // Sonido de despegue simulado con el procesador de audio del navegador (no requiere archivos externos)
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+                oscillator.type = 'sawtooth';
+                oscillator.frequency.setValueAtTime(100, audioCtx.currentTime);
+                oscillator.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 1.5);
+                gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 1.5);
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+                oscillator.start();
+                oscillator.stop(audioCtx.currentTime + 1.5);
+            } catch(e) { console.log("Audio no soportado preliminarmente."); }
+        }
+
+        // Cuenta Regresiva Exacta al 23 de Julio de 2026 10:20 AM
+        const countdownDate = new Date("Jul 23, 2026 10:20:00").getTime();
+
+        const x = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = countdownDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerHTML = days < 10 ? "0" + days : days;
+            document.getElementById("hours").innerHTML = hours < 10 ? "0" + hours : hours;
+            document.getElementById("minutes").innerHTML = minutes < 10 ? "0" + minutes : minutes;
+            document.getElementById("seconds").innerHTML = seconds < 10 ? "0" + seconds : seconds;
+
+            if (distance < 0) {
+                clearInterval(x);
+                document.querySelector(".countdown-box").innerHTML = "<div class='countdown-title' style='color:#fff;'>¡LLEGÓ EL DÍA DEL VUELO! ✈️</div>";
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
